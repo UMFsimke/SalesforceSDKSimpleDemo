@@ -1,4 +1,4 @@
-package com.example.simpledemo.repository.network.exceptions;
+package com.example.simpledemo.model.network.exceptions;
 
 public class NetworkException extends Exception {
 

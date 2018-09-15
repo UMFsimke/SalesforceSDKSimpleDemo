@@ -1,6 +1,6 @@
-package com.example.simpledemo.repository.network.executor;
+package com.example.simpledemo.model.network.executor;
 
-import com.example.simpledemo.repository.network.exceptions.NetworkException;
+import com.example.simpledemo.model.network.exceptions.NetworkException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;

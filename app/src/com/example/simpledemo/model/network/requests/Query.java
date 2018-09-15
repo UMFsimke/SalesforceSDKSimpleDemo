@@ -1,4 +1,4 @@
-package com.example.simpledemo.repository.network.requests;
+package com.example.simpledemo.model.network.requests;
 
 import com.example.simpledemo.utils.ArrayUtils;
 

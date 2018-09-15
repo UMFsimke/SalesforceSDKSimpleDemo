@@ -1,6 +1,6 @@
-package com.example.simpledemo.repository.model.domain;
+package com.example.simpledemo.model.pojo.domain;
 
-import com.example.simpledemo.repository.model.salesforce.SalesforceEvent;
+import com.example.simpledemo.model.pojo.salesforce.SalesforceEvent;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.example.simpledemo.repository.model.salesforce;
+package com.example.simpledemo.model.pojo.salesforce;
 
 
 import com.salesforce.androidsdk.smartsync.model.SalesforceObject;

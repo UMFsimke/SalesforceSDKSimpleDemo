@@ -1,4 +1,4 @@
-package com.example.simpledemo.repository.network.executor;
+package com.example.simpledemo.model.network.executor;
 
 import com.google.gson.JsonElement;
 import com.salesforce.androidsdk.rest.RestRequest;
