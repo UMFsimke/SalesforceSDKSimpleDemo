@@ -8,6 +8,7 @@ public class User {
 
     @SerializedName(SalesforceUser.FIELD_ID) private String id;
     @SerializedName(SalesforceUser.FIELD_USERNAME) private String username;
+    @SerializedName(SalesforceUser.FIELD_NAME) private String name;
     @SerializedName(SalesforceUser.FIELD_ABOUT_ME) private String aboutMe;
     @SerializedName(SalesforceUser.FIELD_ADDRESS) private String address;
     @SerializedName(SalesforceUser.FIELD_COMPANY_NAME) private String companyName;
@@ -33,6 +34,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAboutMe() {

@@ -11,6 +11,7 @@ public class SalesforceUser extends SalesforceObject {
     private static final String USER_OBJECT_TYPE = "User";
     public static final String FIELD_ID = Constants.ID;
     public static final String FIELD_USERNAME = "Username";
+    public static final String FIELD_NAME = "Name";
     public static final String FIELD_ABOUT_ME = "AboutMe";
     public static final String FIELD_ADDRESS = "Address";
     public static final String FIELD_COMPANY_NAME = "CompanyName";
