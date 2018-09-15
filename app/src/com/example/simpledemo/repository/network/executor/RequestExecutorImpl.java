@@ -1,5 +1,6 @@
-package com.example.simpledemo.repository.network;
+package com.example.simpledemo.repository.network.executor;
 
+import com.example.simpledemo.repository.network.exceptions.NetworkException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
+import io.reactivex.schedulers.Schedulers;
 
 public class RequestExecutorImpl implements RequestExecutor {
 
@@ -25,7 +27,7 @@ public class RequestExecutorImpl implements RequestExecutor {
     @Override
     public Single<JsonElement> execute(final RestRequest request) {
 
-        return Single.create( emitter -> {
+        return Single.<JsonElement>create(emitter -> {
             try {
                 executeRequest(request, emitter);
             } catch (IOException | JsonSyntaxException e) {
@@ -35,7 +37,7 @@ public class RequestExecutorImpl implements RequestExecutor {
 
                 emitter.onError(e);
             }
-        });
+        }).subscribeOn(Schedulers.io());
     }
 
     private void executeRequest(final RestRequest request, SingleEmitter<JsonElement> emitter) throws IOException {
