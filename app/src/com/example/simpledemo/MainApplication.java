@@ -29,6 +29,7 @@ package com.example.simpledemo;
 import android.app.Application;
 
 import com.example.simpledemo.model.di.Graph;
+import com.example.simpledemo.model.view.MainActivity;
 import com.salesforce.androidsdk.analytics.security.Encryptor;
 import com.salesforce.androidsdk.app.SalesforceSDKManager.KeyInterface;
 import com.salesforce.androidsdk.rest.RestClient;
