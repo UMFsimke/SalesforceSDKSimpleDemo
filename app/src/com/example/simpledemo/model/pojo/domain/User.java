@@ -4,13 +4,14 @@ import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.model.pojo.salesforce.SalesforceUser;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONObject;
+
 public class User extends Syncable<SalesforceUser> {
 
-    @SerializedName(SalesforceUser.FIELD_ID) private String id;
     @SerializedName(SalesforceUser.FIELD_USERNAME) private String username;
     @SerializedName(SalesforceUser.FIELD_NAME) private String name;
     @SerializedName(SalesforceUser.FIELD_ABOUT_ME) private String aboutMe;
-    @SerializedName(SalesforceUser.FIELD_ADDRESS) private String address;
+    @SerializedName(SalesforceUser.FIELD_ADDRESS) private Address address;
     @SerializedName(SalesforceUser.FIELD_COMPANY_NAME) private String companyName;
     @SerializedName(SalesforceUser.FIELD_DEPARTMENT) private String department;
     @SerializedName(SalesforceUser.FIELD_BANNER_PHOTO_URL) private String bannerPhotoUrl;
@@ -24,10 +25,6 @@ public class User extends Syncable<SalesforceUser> {
     }
 
     private User() { }
-
-    public String getId() {
-        return id;
-    }
 
     public String getUsername() {
         return username;
@@ -53,11 +50,11 @@ public class User extends Syncable<SalesforceUser> {
         this.aboutMe = aboutMe;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

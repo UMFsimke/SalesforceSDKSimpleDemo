@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 @Module
 public class NetworkModule {
@@ -45,4 +46,10 @@ public class NetworkModule {
         return new SyncExecutorImpl(smartSyncSDKManager,
                 smartSyncSDKManager.getUserAccountManager(), repositories);
     }
+
+    @Provides
+    public OkHttpClient provideOkHttpClient() {
+        return restClient.getOkHttpClient();
+    }
+
 }

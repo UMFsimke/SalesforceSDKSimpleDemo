@@ -5,7 +5,6 @@
 	<string name="app_package">com.example.simpledemo</string>
     <string name="welcome">Welcome %s</string>
 	<string name="logout_button">Logout</string>
-	<string name="fetch_contacts_button">Fetch Contacts</string>
-	<string name="fetch_accounts_button">Fetch Accounts</string>
-	<string name="clear_button">Clear</string>
+	<string name="error_title">Error</string>
+	<string name="ok">OK</string>
 </resources>

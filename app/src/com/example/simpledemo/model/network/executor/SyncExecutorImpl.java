@@ -23,7 +23,6 @@ public class SyncExecutorImpl implements SyncExecutor {
     private SmartSyncSDKManager salesforceSDKManager;
     private UserAccountManager userAccountManager;
     private List<Repository> repositories;
-    private Disposable disposable;
 
     public SyncExecutorImpl(SmartSyncSDKManager salesforceSDKManager,
                             UserAccountManager userAccountManager,
@@ -36,7 +35,7 @@ public class SyncExecutorImpl implements SyncExecutor {
     }
 
     private void bindSync() {
-        disposable = syncSubject
+        syncSubject
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .skipWhile(syncDownOnly -> !isSyncAllowed())

@@ -1,6 +1,7 @@
 package com.example.simpledemo.model.repository;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.simpledemo.model.pojo.domain.Syncable;
 import com.example.simpledemo.model.pojo.salesforce.SalesforceSyncable;
@@ -19,11 +20,14 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 
 public abstract class BaseSyncableRepository<T extends Syncable> implements Repository {
 
     private SmartStore smartStore;
     private SyncManager syncManager;
+    private BehaviorSubject<Boolean> dataChanged;
 
     protected abstract String getSoupName();
     protected abstract String getOrderBy();
@@ -33,11 +37,14 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
     public BaseSyncableRepository(SmartStore smartStore, SyncManager syncManager) {
         this.smartStore = smartStore;
         this.syncManager = syncManager;
+        dataChanged = BehaviorSubject.create();
     }
 
     public Observable<List<T>> getAll() {
-        return Observable.<QuerySpec>create(downstream -> QuerySpec.buildAllQuerySpec(getSoupName(),
-                getOrderBy(), QuerySpec.Order.ascending, Integer.MAX_VALUE))
+        return dataChanged
+                .flatMap(dataUpdated -> Observable.<QuerySpec>just(
+                        QuerySpec.buildAllQuerySpec(getSoupName(), getOrderBy(),
+                                QuerySpec.Order.ascending, Integer.MAX_VALUE)))
                 .map(query -> smartStore.query(query, 0))
                 .map(this::mapToSalesforceSyncables)
                 .map(this::mapToDomainObjects);
@@ -93,7 +100,9 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
 
                     if (SyncState.Status.DONE.equals(syncResult.getStatus())) {
                         downstream.onSuccess(true);
-                    } else {
+                        Log.e("Data", "Has observers: " + dataChanged.hasObservers());
+                        dataChanged.onNext(true);
+                    } else if (SyncState.Status.FAILED.equals(syncResult.getStatus())) {
                         downstream.onSuccess(false);
                     }
                 })
@@ -102,6 +111,7 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
 
     @Override
     public Single<Boolean> syncUp() {
-        return performSync(getSyncUpStrategyName());
+        return performSync(getSyncUpStrategyName())
+                .flatMap(dataSent -> performSync(getSyncDownStrategyName()));
     }
 }

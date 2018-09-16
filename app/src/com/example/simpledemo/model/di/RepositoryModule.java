@@ -20,11 +20,13 @@ import dagger.Provides;
 public class RepositoryModule {
 
     @Provides
+    @Singleton
     public UserRepository provideUserRepository(SmartStore smartStore, SyncManager syncManager) {
         return new UserRepository(smartStore, syncManager);
     }
 
     @Provides
+    @Singleton
     public EventsRepository provideEventsRepository(UserRepository userRepository,
                                                     SmartStore smartStore,
                                                     SyncManager syncManager) {
@@ -32,11 +34,12 @@ public class RepositoryModule {
     }
 
     @Provides
+    @Singleton
     public List<Repository> provideRepositories(UserRepository userRepository,
                                                 EventsRepository eventsRepository) {
-        List<Repository> repositories = new ArrayList<>(2);
+        List<Repository> repositories = new ArrayList<>(1);
         repositories.add(userRepository);
-        repositories.add(eventsRepository);
+        //repositories.add(eventsRepository);
         return repositories;
     }
 }

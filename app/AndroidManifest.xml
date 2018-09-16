@@ -13,7 +13,7 @@
 		android:manageSpaceActivity="com.salesforce.androidsdk.ui.ManageSpaceActivity">
 
 		<!-- Launcher screen -->
-		<activity android:name=".model.view.MainActivity"
+		<activity android:name=".view.MainActivity"
 		    android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

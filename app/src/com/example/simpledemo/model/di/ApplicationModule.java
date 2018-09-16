@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 @Module
 public class ApplicationModule {
@@ -20,6 +21,10 @@ public class ApplicationModule {
 
     public ApplicationModule(Application app) {
         this.application = app;
+
+        provideSmartSyncSDKManager().setupUserStoreFromDefaultConfig();
+        provideSmartSyncSDKManager().setupUserSyncsFromDefaultConfig();
+        provideSmartSyncSDKManager().setDevSupportEnabled(true);
     }
 
     @Provides
@@ -55,6 +60,5 @@ public class ApplicationModule {
     public SyncManager provideSyncManager(UserAccount currentUser) {
         return SyncManager.getInstance(currentUser);
     }
-
 
 }
