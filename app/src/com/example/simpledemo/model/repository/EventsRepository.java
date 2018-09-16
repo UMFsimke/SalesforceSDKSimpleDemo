@@ -20,6 +20,7 @@ import io.reactivex.Observable;
 public class EventsRepository extends BaseSyncableRepository<Event> {
 
     private static final String QUERY_GET_EVENTS_FOR_USER_WITH_ID = "SELECT {events:_soup} FROM {events} WHERE {events:CreatedById} == '%s'";
+    private static final String QUERY_GET_EVENT_WITH_ID = "SELECT {events:_soup} FROM {events} WHERE {events:Id} == '%s'";
 
     private static final String SOUP_NAME = "events";
     private static final String SYNC_DOWN_STRATEGY_NAME = "syncDownEvents";
@@ -69,7 +70,6 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
     }
 
     public Observable<List<Event>> getEventsForUser(String userId) {
-
         return dataChanged
                 .map(dataUpdated -> String.format(QUERY_GET_EVENTS_FOR_USER_WITH_ID, userId))
                 .flatMap(smartQuery -> Observable.just(QuerySpec.buildSmartQuerySpec(smartQuery,
@@ -92,5 +92,15 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
         }
 
         return events;
+    }
+
+    public Observable<Event> getEvent(String eventId) {
+        return dataChanged
+                .map(dataUpdated -> String.format(QUERY_GET_EVENT_WITH_ID, eventId))
+                .flatMap(smartQuery -> Observable.just(QuerySpec.buildSmartQuerySpec(smartQuery,
+                        Integer.MAX_VALUE)))
+                .map(query -> smartStore.query(query, 0))
+                .map(this::mapToEvents)
+                .map(events -> events.get(0));
     }
 }

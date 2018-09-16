@@ -35,6 +35,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    public void setOnEventClickedListener(OnEventClickedListener onEventClickedListener) {
+        this.onEventClickedListener = onEventClickedListener;
+    }
+
     @Override
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

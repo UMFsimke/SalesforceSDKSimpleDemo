@@ -25,6 +25,10 @@
 			android:label="@string/app_name">
 		</activity>
 
+		<activity android:name=".view.eventDetails.EventDetailsActivity"
+			android:label="@string/app_name">
+		</activity>
+
         <!-- Login activity -->
         <!--
             Launch mode of "singleInstance" ensures that the activity isn't restarted

@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.simpledemo.model.network.executor.SyncExecutor;
 import com.example.simpledemo.model.repository.EventsRepository;
 import com.example.simpledemo.model.repository.UserRepository;
+import com.example.simpledemo.view.eventDetails.EventDetailsContract;
 import com.example.simpledemo.view.events.EventsListContract;
 import com.example.simpledemo.view.userDetails.UserDetailsContract;
 import com.example.simpledemo.view.users.UsersListContract;
@@ -30,6 +31,7 @@ public interface Graph {
     UsersListContract.Presenter getUserListPresenter();
     EventsListContract.Presenter getEventsListPresenter();
     UserDetailsContract.Presenter getUserDetailsPresenter();
+    EventDetailsContract.Presenter getEventDetailsPresenter();
     SyncExecutor getSyncExecutor();
     UserRepository getUserRepository();
     EventsRepository getEventsRepository();

@@ -1,5 +1,6 @@
 package com.example.simpledemo.view.events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,13 +15,14 @@ import android.view.ViewGroup;
 import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.R;
 import com.example.simpledemo.model.pojo.domain.Event;
+import com.example.simpledemo.view.eventDetails.EventDetailsActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FragmentEvents extends Fragment implements EventsListContract.View {
+public class FragmentEvents extends Fragment implements EventsListContract.View, EventsAdapter.OnEventClickedListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView eventsList;
     protected EventsListContract.Presenter presenter;
@@ -52,10 +54,20 @@ public class FragmentEvents extends Fragment implements EventsListContract.View 
         EventsAdapter adapter = (EventsAdapter) eventsList.getAdapter();
         if (adapter == null) {
             adapter = new EventsAdapter();
+            adapter.setOnEventClickedListener(this);
             eventsList.setAdapter(adapter);
         }
 
         adapter.replaceItems(events);
+    }
+
+    @Override
+    public void onEventClicked(Event event) {
+        Intent intent = new Intent(getContext(), EventDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(EventDetailsActivity.EXTRA_EVENT_ID, event.getId());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
