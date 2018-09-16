@@ -19,7 +19,7 @@ public class RequestExecutorImpl implements RequestExecutor {
     private RestClient restClient;
     private JsonParser jsonParser;
 
-    RequestExecutorImpl(RestClient restClient, JsonParser jsonParser) {
+    public RequestExecutorImpl(RestClient restClient, JsonParser jsonParser) {
         this.restClient = restClient;
         this.jsonParser = jsonParser;
     }

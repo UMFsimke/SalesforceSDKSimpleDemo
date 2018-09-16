@@ -1,9 +1,9 @@
 package com.example.simpledemo.model.repository;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface Repository {
 
-    Observable<Boolean> syncDown();
-    Observable<Boolean> syncUp();
+    Single<Boolean> syncDown();
+    Single<Boolean> syncUp();
 }

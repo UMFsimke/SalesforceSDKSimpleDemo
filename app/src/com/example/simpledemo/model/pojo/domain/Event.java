@@ -1,14 +1,13 @@
 package com.example.simpledemo.model.pojo.domain;
 
+import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.model.pojo.salesforce.SalesforceEvent;
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Event {
+public class Event extends Syncable<SalesforceEvent> {
 
-    @SerializedName(SalesforceEvent.FIELD_ID) private String id;
     @SerializedName(SalesforceEvent.FIELD_DESCRIPTION) private String description;
     @SerializedName(SalesforceEvent.FIELD_LOCATION) private String location;
     @SerializedName(SalesforceEvent.FIELD_PRIVATE) private boolean privateEvent;
@@ -19,14 +18,16 @@ public class Event {
     @SerializedName(SalesforceEvent.FIELD_IS_ALL_DAY) private boolean allDay;
     private User createdBy;
 
-    public static Event parse(SalesforceEvent salesforceEvent, User user, Gson gson) {
-        Event event = gson.fromJson(salesforceEvent.getRawData().toString(), Event.class);
+    public static Event parse(SalesforceEvent salesforceEvent, User user) {
+        Event event = MainApplication.getInstance().graph().getGson()
+                .fromJson(salesforceEvent.getRawData().toString(), Event.class);
+        event.updateLocalFlags();
         event.setCreatedBy(user);
         return event;
     }
 
-    public String getId() {
-        return id;
+    private Event() {
+        super();
     }
 
     public String getDescription() {

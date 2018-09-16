@@ -9,7 +9,7 @@ import com.salesforce.androidsdk.smartsync.app.SmartSyncSDKManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -40,8 +40,8 @@ public class SyncExecutorImpl implements SyncExecutor {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .skipWhile(syncDownOnly -> !isSyncAllowed())
-                .flatMap(syncDownOnly -> syncDownOnly ? getSyncDownObservable() :
-                        getSyncUpObservable())
+                .flatMap(syncDownOnly -> syncDownOnly ? getSyncDownObservable().toObservable() :
+                        getSyncUpObservable().toObservable())
                 .onErrorReturnItem(false)
                 .ignoreElements()
                 .subscribe();
@@ -51,30 +51,30 @@ public class SyncExecutorImpl implements SyncExecutor {
         return !salesforceSDKManager.isLoggingOut() && userAccountManager.getCurrentUser() != null;
     }
 
-    private Observable<Boolean> getSyncDownObservable() {
+    private Single<Boolean> getSyncDownObservable() {
         if (ListUtils.isEmpty(repositories)) {
-            return Observable.empty();
+            return Single.just(true);
         }
 
-        List<Observable<Boolean>> syncDownObservables = new ArrayList<>();
+        List<Single<Boolean>> syncDownObservables = new ArrayList<>();
         for (Repository repository : repositories) {
             syncDownObservables.add(repository.syncDown());
         }
 
-        return Observable.zip(syncDownObservables, objects -> true);
+        return Single.zip(syncDownObservables, objects -> true);
     }
 
-    private Observable<Boolean> getSyncUpObservable() {
+    private Single<Boolean> getSyncUpObservable() {
         if (ListUtils.isEmpty(repositories)) {
-            return Observable.empty();
+            return Single.just(true);
         }
 
-        List<Observable<Boolean>> synncUpObservables = new ArrayList<>();
+        List<Single<Boolean>> synncUpObservables = new ArrayList<>();
         for (Repository repository : repositories) {
             synncUpObservables.add(repository.syncUp());
         }
 
-        return Observable.zip(synncUpObservables, objects -> true);
+        return Single.zip(synncUpObservables, objects -> true);
     }
 
     @Override

@@ -28,19 +28,38 @@ package com.example.simpledemo;
 
 import android.app.Application;
 
+import com.example.simpledemo.model.di.Graph;
 import com.salesforce.androidsdk.analytics.security.Encryptor;
 import com.salesforce.androidsdk.app.SalesforceSDKManager.KeyInterface;
+import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.smartsync.app.SmartSyncSDKManager;
+import com.salesforce.androidsdk.ui.LoginActivity;
 
 /**
  * Application class for our application.
  */
 public class MainApplication extends Application {
 
+	private Graph graph;
+	private static MainApplication instance;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SmartSyncSDKManager.initNative(getApplicationContext(), new NativeKeyImpl(), MainActivity.class);
+		instance = this;
+		SmartSyncSDKManager.initNative(getApplicationContext(), new NativeKeyImpl(), MainActivity.class, LoginActivity.class);
+	}
+
+	public static MainApplication getInstance() {
+		return instance;
+	}
+
+	public Graph graph() {
+		return graph;
+	}
+
+	public void initGraph(RestClient restClient) {
+		graph = Graph.Initializer.init(instance, restClient);
 	}
 }
 

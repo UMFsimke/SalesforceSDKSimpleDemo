@@ -1,10 +1,10 @@
 package com.example.simpledemo.model.pojo.domain;
 
+import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.model.pojo.salesforce.SalesforceUser;
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User extends Syncable<SalesforceUser> {
 
     @SerializedName(SalesforceUser.FIELD_ID) private String id;
     @SerializedName(SalesforceUser.FIELD_USERNAME) private String username;
@@ -18,8 +18,9 @@ public class User {
     @SerializedName(SalesforceUser.FIELD_PHONE) private String phone;
     @SerializedName(SalesforceUser.FIELD_PHOTO_URL) private String photoUrl;
 
-    public static User parse(SalesforceUser user, Gson gson) {
-        return gson.fromJson(user.getRawData().toString(), User.class);
+    public static User parse(SalesforceUser user) {
+        return MainApplication.getInstance().graph().getGson()
+                .fromJson(user.getRawData().toString(), User.class);
     }
 
     private User() { }

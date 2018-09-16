@@ -75,6 +75,7 @@ public class MainActivity extends SalesforceActivity {
 	
 	@Override
 	public void onResume(RestClient client) {
+		MainApplication.getInstance().initGraph(client);
         // Keeping reference to rest client
         this.client = client; 
 
