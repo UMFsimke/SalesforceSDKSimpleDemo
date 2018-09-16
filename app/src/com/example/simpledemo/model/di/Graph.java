@@ -6,6 +6,7 @@ import com.example.simpledemo.model.network.executor.SyncExecutor;
 import com.example.simpledemo.model.repository.EventsRepository;
 import com.example.simpledemo.model.repository.UserRepository;
 import com.example.simpledemo.view.events.EventsListContract;
+import com.example.simpledemo.view.userDetails.UserDetailsContract;
 import com.example.simpledemo.view.users.UsersListContract;
 import com.google.gson.Gson;
 import com.salesforce.androidsdk.rest.RestClient;
@@ -28,6 +29,7 @@ public interface Graph {
     Gson getGson();
     UsersListContract.Presenter getUserListPresenter();
     EventsListContract.Presenter getEventsListPresenter();
+    UserDetailsContract.Presenter getUserDetailsPresenter();
     SyncExecutor getSyncExecutor();
     UserRepository getUserRepository();
     EventsRepository getEventsRepository();

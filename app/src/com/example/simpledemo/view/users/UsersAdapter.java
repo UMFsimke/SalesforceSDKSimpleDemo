@@ -13,7 +13,6 @@ import com.example.simpledemo.R;
 import com.example.simpledemo.model.pojo.domain.User;
 import com.example.simpledemo.utils.CircleTransform;
 import com.example.simpledemo.utils.ListUtils;
-import com.salesforce.androidsdk.auth.HttpAccess;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +38,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     public void replaceItems(List<User> users) {
         this.users = users;
         notifyDataSetChanged();
+    }
+
+    public void setOnUserClickedListener(OnUserClickedListener onUserClickedListener) {
+        this.onUserClickedListener = onUserClickedListener;
     }
 
     @Override
@@ -85,6 +88,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
         public void render(User user) {
             if (user == null) return;
 
+            itemView.setTag(user);
             initials.setText(user.getName().substring(0, 2));
             name.setText(user.getName());
 

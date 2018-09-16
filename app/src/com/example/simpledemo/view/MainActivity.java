@@ -32,9 +32,11 @@ public class MainActivity extends SalesforceActivity {
 	}
 
 	private void initViewPager() {
-	    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-	    viewPager.setAdapter(adapter);
-	    tabLayout.setupWithViewPager(viewPager);
+	    if (viewPager.getAdapter() == null) {
+            MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(viewPager);
+        }
     }
 
 	@Override

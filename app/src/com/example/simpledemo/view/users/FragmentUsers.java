@@ -1,5 +1,6 @@
 package com.example.simpledemo.view.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,13 +15,15 @@ import android.view.ViewGroup;
 import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.R;
 import com.example.simpledemo.model.pojo.domain.User;
+import com.example.simpledemo.view.userDetails.UserDetailsActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FragmentUsers extends Fragment implements UsersListContract.View {
+public class FragmentUsers extends Fragment implements UsersListContract.View,
+        UsersAdapter.OnUserClickedListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView usersList;
     protected UsersListContract.Presenter presenter;
@@ -52,10 +55,20 @@ public class FragmentUsers extends Fragment implements UsersListContract.View {
         UsersAdapter adapter = (UsersAdapter) usersList.getAdapter();
         if (adapter == null) {
             adapter = new UsersAdapter();
+            adapter.setOnUserClickedListener(this);
             usersList.setAdapter(adapter);
         }
 
         adapter.replaceItems(users);
+    }
+
+    @Override
+    public void onUserClicked(User user) {
+        Intent intent = new Intent(getContext(), UserDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(UserDetailsActivity.EXTRA_USER_ID, user.getId());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

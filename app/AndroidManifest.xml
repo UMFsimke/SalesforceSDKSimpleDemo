@@ -21,6 +21,10 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".view.userDetails.UserDetailsActivity"
+			android:label="@string/app_name">
+		</activity>
+
         <!-- Login activity -->
         <!--
             Launch mode of "singleInstance" ensures that the activity isn't restarted

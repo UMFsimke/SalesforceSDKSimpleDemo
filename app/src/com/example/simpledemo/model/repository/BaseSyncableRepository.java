@@ -24,9 +24,9 @@ import io.reactivex.subjects.BehaviorSubject;
 
 public abstract class BaseSyncableRepository<T extends Syncable> implements Repository {
 
-    private SmartStore smartStore;
+    protected SmartStore smartStore;
     private SyncManager syncManager;
-    private BehaviorSubject<Boolean> dataChanged;
+    protected BehaviorSubject<Boolean> dataChanged;
 
     protected abstract String getSoupName();
     protected abstract String getOrderBy();
@@ -41,7 +41,7 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
 
     public Observable<List<T>> getAll() {
         return dataChanged
-                .flatMap(dataUpdated -> Observable.<QuerySpec>just(
+                .flatMap(dataUpdated -> Observable.just(
                         QuerySpec.buildAllQuerySpec(getSoupName(), getOrderBy(),
                                 QuerySpec.Order.ascending, Integer.MAX_VALUE)))
                 .map(query -> smartStore.query(query, 0))
@@ -49,7 +49,7 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
                 .map(this::mapToDomainObjects);
     }
 
-    private List<SalesforceSyncable> mapToSalesforceSyncables(JSONArray array) {
+    protected List<SalesforceSyncable> mapToSalesforceSyncables(JSONArray array) {
         List<SalesforceSyncable> results = new ArrayList<>();
         if (array == null) {
             return results;
@@ -68,7 +68,7 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
 
     protected abstract <R extends SalesforceSyncable> R parseSalesforceObject(JSONObject object);
 
-    private List<T> mapToDomainObjects(List<SalesforceSyncable> salesforceSyncables) {
+    protected List<T> mapToDomainObjects(List<SalesforceSyncable> salesforceSyncables) {
         List<T> results = new ArrayList<>();
         if (ListUtils.isEmpty(salesforceSyncables)) {
             return results;
