@@ -75,7 +75,7 @@ public class User extends Syncable<SalesforceUser> {
     }
 
     public String getBannerPhotoUrl() {
-        return bannerPhotoUrl;
+        return "https://c.eu16.content.force.com/" + bannerPhotoUrl;
     }
 
     public void setBannerPhotoUrl(String bannerPhotoUrl) {

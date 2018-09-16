@@ -98,7 +98,7 @@ public class FragmentUserDetails extends Fragment implements UserDetailsContract
         name.setText(user.getName());
         aboutMe.setText(user.getAboutMe());
         address.setText(user.getAddress().formattedName());
-        company.setText(user.getCompanyName() + ", as part of " + user.getDepartment());
+        company.setText(user.getCompanyName());
         mobile.setText(user.getMobilePhone());
         phone.setText(user.getPhone());
 

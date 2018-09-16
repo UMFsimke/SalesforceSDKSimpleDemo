@@ -4,11 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class Address {
 
-    @SerializedName("street_number") private int streetNumber;
-    @SerializedName("street_name") private String streetName;
+    @SerializedName("street") private String streetName;
     @SerializedName("city") private String city;
+    @SerializedName("country") private String country;
+    @SerializedName("postalCode") private String postalCode;
 
     public String formattedName() {
-        return String.format("%s %d, %s", streetName, streetNumber, city);
+        return String.format("%s %s, %s %s", streetName, postalCode, city, country);
     }
 }
