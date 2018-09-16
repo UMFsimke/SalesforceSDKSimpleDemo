@@ -1,39 +1,37 @@
-package com.example.simpledemo.view.users;
-
-import android.util.Log;
+package com.example.simpledemo.view.events;
 
 import com.example.simpledemo.MainApplication;
-import com.example.simpledemo.model.repository.UserRepository;
+import com.example.simpledemo.model.repository.EventsRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class UserListPresenter implements UsersListContract.Presenter {
+public class EventsListPresenter implements EventsListContract.Presenter {
 
-    private UsersListContract.View view;
-    private UserRepository userRepository;
+    private EventsListContract.View view;
+    private EventsRepository eventsRepository;
     private CompositeDisposable compositeDisposable;
 
-    public UserListPresenter() {
+    public EventsListPresenter() {
         compositeDisposable = new CompositeDisposable();
-        userRepository = MainApplication.getInstance().graph().getUserRepository();
+        eventsRepository = MainApplication.getInstance().graph().getEventsRepository();
     }
 
     @Override
-    public void setView(UsersListContract.View view) {
+    public void setView(EventsListContract.View view) {
         this.view = view;
     }
 
     @Override
     public void viewShown() {
-        Disposable disposable = userRepository.getAll()
+        Disposable disposable = eventsRepository.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(users -> {
+                .subscribe(events -> {
                     if (view == null) { return; }
-                    view.showUsers(users);
+                    view.showEvents(events);
                 }, error -> {
                     if (view == null) { return; }
                     view.showError(error.getLocalizedMessage());

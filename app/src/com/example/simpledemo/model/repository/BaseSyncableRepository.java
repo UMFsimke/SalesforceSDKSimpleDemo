@@ -21,7 +21,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
-import io.reactivex.subjects.PublishSubject;
 
 public abstract class BaseSyncableRepository<T extends Syncable> implements Repository {
 
@@ -100,8 +99,8 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
 
                     if (SyncState.Status.DONE.equals(syncResult.getStatus())) {
                         downstream.onSuccess(true);
-                        Log.e("Data", "Has observers: " + dataChanged.hasObservers());
                         dataChanged.onNext(true);
+                        Log.e("Data", getSoupName());
                     } else if (SyncState.Status.FAILED.equals(syncResult.getStatus())) {
                         downstream.onSuccess(false);
                     }

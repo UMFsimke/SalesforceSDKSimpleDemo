@@ -14,7 +14,6 @@ public class Event extends Syncable<SalesforceEvent> {
     @SerializedName(SalesforceEvent.FIELD_START_DATE_TIME) private Date startDateTime;
     @SerializedName(SalesforceEvent.FIELD_END_DATE_TIME) private Date endDateTime;
     @SerializedName(SalesforceEvent.FIELD_EVENT_SUBJECT) private String subject;
-    @SerializedName(SalesforceEvent.FIELD_TYPE) private String type;
     @SerializedName(SalesforceEvent.FIELD_IS_ALL_DAY) private boolean allDay;
     private User createdBy;
 
@@ -76,14 +75,6 @@ public class Event extends Syncable<SalesforceEvent> {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public boolean isAllDay() {

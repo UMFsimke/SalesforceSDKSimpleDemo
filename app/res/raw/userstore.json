@@ -19,6 +19,7 @@
       "indexes": [
         { "path": "Id", "type": "string"},
         { "path": "CreatedById", "type": "string"},
+        { "path": "StartDateTime", "type": "string"},
         { "path": "__local__", "type": "string"},
         { "path": "__locally_created__", "type": "string"},
         { "path": "__locally_updated__", "type": "string"},

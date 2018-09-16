@@ -37,9 +37,9 @@ public class RepositoryModule {
     @Singleton
     public List<Repository> provideRepositories(UserRepository userRepository,
                                                 EventsRepository eventsRepository) {
-        List<Repository> repositories = new ArrayList<>(1);
+        List<Repository> repositories = new ArrayList<>(2);
         repositories.add(userRepository);
-        //repositories.add(eventsRepository);
+        repositories.add(eventsRepository);
         return repositories;
     }
 }

@@ -60,7 +60,9 @@ public class SyncExecutorImpl implements SyncExecutor {
             syncDownObservables.add(repository.syncDown());
         }
 
-        return Single.zip(syncDownObservables, objects -> true);
+        return Single.concat(syncDownObservables)
+                .toList()
+                .map(results -> true);
     }
 
     private Single<Boolean> getSyncUpObservable() {
@@ -73,7 +75,9 @@ public class SyncExecutorImpl implements SyncExecutor {
             synncUpObservables.add(repository.syncUp());
         }
 
-        return Single.zip(synncUpObservables, objects -> true);
+        return Single.concat(synncUpObservables)
+                .toList()
+                .map(results -> true);
     }
 
     @Override

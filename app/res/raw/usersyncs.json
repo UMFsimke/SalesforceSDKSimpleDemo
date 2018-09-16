@@ -11,15 +11,15 @@
       "syncName": "syncDownEvents",
       "syncType": "syncDown",
       "soupName": "events",
-      "target": {"type":"soql", "query":"SELECT CreatedById, Description, Location, IsPrivate, StartDateTime, EndDateTime, Subject, Type, IsAllDayEvent FROM Event LIMIT 10000"},
+      "target": {"type":"soql", "query":"SELECT Id, CreatedById, Description, Location, IsPrivate, StartDateTime, EndDateTime, Subject, IsAllDayEvent FROM Event LIMIT 10000"},
       "options": {"mergeMode":"OVERWRITE"}
     },
     {
       "syncName": "syncUpEvents",
       "syncType": "syncUp",
       "soupName": "events",
-      "target": {"createFieldlist":["CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "Type", "IsAllDayEvent"]},
-      "options": {"fieldlist":["Id", "CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "Type", "IsAllDayEvent"], "mergeMode":"LEAVE_IF_CHANGED"}
+      "target": {"createFieldlist":["CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"]},
+      "options": {"fieldlist":["Id", "CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"], "mergeMode":"LEAVE_IF_CHANGED"}
     }
   ]
 }

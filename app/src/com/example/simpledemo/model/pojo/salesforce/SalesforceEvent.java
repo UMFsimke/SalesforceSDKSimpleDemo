@@ -18,7 +18,6 @@ public class SalesforceEvent extends SalesforceSyncable<Event> {
     public static final String FIELD_START_DATE_TIME = "StartDateTime";
     public static final String FIELD_END_DATE_TIME = "EndDateTime";
     public static final String FIELD_EVENT_SUBJECT = "Subject";
-    public static final String FIELD_TYPE = "Type";
     public static final String FIELD_IS_ALL_DAY = "IsAllDayEvent";
 
     public SalesforceEvent(JSONObject data) {
@@ -42,7 +41,6 @@ public class SalesforceEvent extends SalesforceSyncable<Event> {
         updateField(FIELD_START_DATE_TIME, event.getStartDateTime(), isCreated);
         updateField(FIELD_END_DATE_TIME, event.getEndDateTime(), isCreated);
         updateField(FIELD_EVENT_SUBJECT, event.getSubject(), isCreated);
-        updateField(FIELD_TYPE, event.getType(), isCreated);
         updateField(FIELD_IS_ALL_DAY, event.isAllDay(), isCreated);
     }
 

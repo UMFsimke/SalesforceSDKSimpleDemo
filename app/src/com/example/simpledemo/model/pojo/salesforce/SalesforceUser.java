@@ -3,6 +3,8 @@ package com.example.simpledemo.model.pojo.salesforce;
 
 import android.text.TextUtils;
 
+import com.example.simpledemo.MainApplication;
+import com.example.simpledemo.model.pojo.domain.Address;
 import com.example.simpledemo.model.pojo.domain.User;
 import com.salesforce.androidsdk.smartsync.util.Constants;
 
@@ -40,7 +42,8 @@ public class SalesforceUser extends SalesforceSyncable<User> {
 
         updateField(FIELD_NAME, user.getName(), isCreated);
         updateField(FIELD_ABOUT_ME, user.getAboutMe(), isCreated);
-        updateField(FIELD_ADDRESS, user.getAddress(), isCreated);
+        updateField(FIELD_ADDRESS, MainApplication.getInstance().graph().getGson()
+                .toJson(user.getAddress(), Address.class), isCreated);
         updateField(FIELD_MOBILE_PHONE, user.getMobilePhone(), isCreated);
         updateField(FIELD_PHONE, user.getPhone(), isCreated);
         updateField(FIELD_DEPARTMENT, user.getDepartment(), isCreated);
