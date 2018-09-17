@@ -61,7 +61,7 @@ public class MainActivity extends SalesforceActivity {
 		syncExecutor = MainApplication.getInstance().graph().getSyncExecutor();
         initViewPager();
         setupPeriodicSync();
-        syncExecutor.performSyncDownOnly();
+        syncExecutor.performFullSync();
 	}
 
 	public void onLogoutClick() {
