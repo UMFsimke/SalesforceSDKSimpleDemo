@@ -1,5 +1,7 @@
 package com.example.simpledemo.model.di;
 
+import com.example.simpledemo.view.editEvent.EditEventContract;
+import com.example.simpledemo.view.editEvent.EditEventPresenter;
 import com.example.simpledemo.view.eventDetails.EventDetailsContract;
 import com.example.simpledemo.view.eventDetails.EventDetailsPresenter;
 import com.example.simpledemo.view.events.EventsListContract;
@@ -33,5 +35,10 @@ public class PresentersModule {
     @Provides
     EventDetailsContract.Presenter providesEventDetailsPresenter() {
         return new EventDetailsPresenter();
+    }
+
+    @Provides
+    EditEventContract.Presenter providesEditEventPresenter() {
+        return new EditEventPresenter();
     }
 }

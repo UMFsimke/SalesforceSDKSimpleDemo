@@ -29,6 +29,10 @@
 			android:label="@string/app_name">
 		</activity>
 
+		<activity android:name=".view.editEvent.EditEventActivity"
+			android:label="@string/event_label">
+		</activity>
+
         <!-- Login activity -->
         <!--
             Launch mode of "singleInstance" ensures that the activity isn't restarted

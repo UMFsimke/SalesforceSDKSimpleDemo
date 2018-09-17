@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.simpledemo.MainApplication;
@@ -47,8 +50,24 @@ public class MainActivity extends SalesforceActivity {
         syncExecutor.performSyncDownOnly();
 	}
 
-	public void onLogoutClick(View v) {
+	public void onLogoutClick() {
 		SalesforceSDKManager.getInstance().logout(this);
 	}
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	    if (item.getItemId() == R.id.sign_out) {
+	        onLogoutClick();
+	        return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
