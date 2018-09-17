@@ -34,14 +34,14 @@ public class FragmentUsers extends Fragment implements UsersListContract.View,
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
         initRecyclerView();
-        presenter = MainApplication.getInstance().graph().getUserListPresenter();
-        presenter.setView(this);
         return rootView;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        presenter = MainApplication.getInstance().graph().getUserListPresenter();
+        presenter.setView(this);
         presenter.viewShown();
     }
 

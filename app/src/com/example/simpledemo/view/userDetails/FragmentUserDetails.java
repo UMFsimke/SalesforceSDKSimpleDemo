@@ -64,22 +64,22 @@ public class FragmentUserDetails extends Fragment implements UserDetailsContract
 
         userId = savedInstanceState == null ? getArguments().getString(EXTRA_USER_ID) :
                 savedInstanceState.getString(EXTRA_USER_ID);
+        return rootView;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         presenter = MainApplication.getInstance().graph().getUserDetailsPresenter();
         presenter.setView(this);
-        return rootView;
+        presenter.getUser(userId);
+
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_USER_ID, userId);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.getUser(userId);
     }
 
     private void initRecyclerView() {
@@ -97,7 +97,7 @@ public class FragmentUserDetails extends Fragment implements UserDetailsContract
         username.setText(user.getUsername());
         name.setText(user.getName());
         aboutMe.setText(user.getAboutMe());
-        address.setText(user.getAddress().formattedName());
+        address.setText(user.getAddress() != null ? user.getAddress().formattedName() : "Unknown");
         company.setText(user.getCompanyName());
         mobile.setText(user.getMobilePhone());
         phone.setText(user.getPhone());
@@ -110,7 +110,6 @@ public class FragmentUserDetails extends Fragment implements UserDetailsContract
             initials.setVisibility(View.GONE);
             profilePhoto.setVisibility(View.VISIBLE);
             new Picasso.Builder(MainApplication.getInstance())
-                    .loggingEnabled(true)
                     .downloader(new OkHttp3Downloader(MainApplication.getInstance().graph().getOkHttpClient()))
                     .build()
                     .load(user.getPhotoUrl())
@@ -124,7 +123,6 @@ public class FragmentUserDetails extends Fragment implements UserDetailsContract
             bannerPhoto.setBackgroundResource(R.drawable.empty_background);
         } else {
             new Picasso.Builder(MainApplication.getInstance())
-                    .loggingEnabled(true)
                     .downloader(new OkHttp3Downloader(MainApplication.getInstance().graph().getOkHttpClient()))
                     .build()
                     .load(user.getBannerPhotoUrl())

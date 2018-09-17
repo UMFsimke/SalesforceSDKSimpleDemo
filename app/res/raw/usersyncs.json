@@ -18,8 +18,8 @@
       "syncName": "syncUpEvents",
       "syncType": "syncUp",
       "soupName": "events",
-      "target": {"createFieldlist":["Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"]},
-      "options": {"fieldlist":["Id", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"], "mergeMode":"LEAVE_IF_CHANGED"}
+      "target": {"createFieldlist":["CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"]},
+      "options": {"fieldlist":["Id","CreatedById", "Description", "Location", "IsPrivate", "StartDateTime", "EndDateTime", "Subject", "IsAllDayEvent"], "mergeMode":"LEAVE_IF_CHANGED"}
     }
   ]
 }

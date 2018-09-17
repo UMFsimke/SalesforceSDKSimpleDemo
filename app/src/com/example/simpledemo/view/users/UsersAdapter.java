@@ -99,7 +99,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
                 initials.setVisibility(View.GONE);
                 profilePhoto.setVisibility(View.VISIBLE);
                 new Picasso.Builder(MainApplication.getInstance())
-                        .loggingEnabled(true)
                         .downloader(new OkHttp3Downloader(MainApplication.getInstance().graph().getOkHttpClient()))
                         .build()
                         .load(user.getPhotoUrl())

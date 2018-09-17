@@ -36,7 +36,7 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
     public BaseSyncableRepository(SmartStore smartStore, SyncManager syncManager) {
         this.smartStore = smartStore;
         this.syncManager = syncManager;
-        dataChanged = BehaviorSubject.create();
+        dataChanged = BehaviorSubject.createDefault(false);
     }
 
     public Observable<List<T>> getAll() {

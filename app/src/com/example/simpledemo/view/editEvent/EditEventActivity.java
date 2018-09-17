@@ -30,7 +30,6 @@ public class EditEventActivity extends SalesforceActivity {
     }
 
     private String eventId;
-    private SyncExecutor syncExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +44,7 @@ public class EditEventActivity extends SalesforceActivity {
     @Override
     public void onResume(RestClient client) {
         MainApplication.getInstance().initGraph(client);
-        syncExecutor = MainApplication.getInstance().graph().getSyncExecutor();
         initFragment(eventId);
-        syncExecutor.performSyncDownOnly();
     }
 
     @Override

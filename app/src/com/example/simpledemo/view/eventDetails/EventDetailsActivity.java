@@ -26,7 +26,6 @@ public class EventDetailsActivity extends SalesforceActivity {
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     private String eventId;
-    private SyncExecutor syncExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +40,7 @@ public class EventDetailsActivity extends SalesforceActivity {
     @Override
     public void onResume(RestClient client) {
         MainApplication.getInstance().initGraph(client);
-        syncExecutor = MainApplication.getInstance().graph().getSyncExecutor();
         initDetailsFragment(eventId);
-        syncExecutor.performSyncDownOnly();
     }
 
     private void initDetailsFragment(String eventId) {
@@ -80,11 +77,6 @@ public class EventDetailsActivity extends SalesforceActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EVENT_DETAILS_REQUEST_CODE && resultCode == EVENT_DELETED) {
             finish();
-            return;
-        }
-
-        if (requestCode == EVENT_DETAILS_REQUEST_CODE && resultCode == EVENT_CHANGED) {
-            initDetailsFragment(eventId);
             return;
         }
     }

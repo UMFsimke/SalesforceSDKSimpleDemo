@@ -39,14 +39,15 @@ public class FragmentEvents extends Fragment implements EventsListContract.View,
         ButterKnife.bind(this, rootView);
         initRecyclerView();
         addBtn.setVisibility(View.VISIBLE);
-        presenter = MainApplication.getInstance().graph().getEventsListPresenter();
-        presenter.setView(this);
         return rootView;
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        presenter = MainApplication.getInstance().graph().getEventsListPresenter();
+        presenter.setView(this);
         presenter.viewShown();
     }
 

@@ -87,27 +87,12 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
         List<Event> events = new ArrayList<>();
         if (results != null && results.length() > 0) {
             JSONArray rows = results.getJSONArray(0);
-            for (int i = 0; i < rows.length(); i++) {
-                JSONObject el = rows.getJSONObject(i);
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject el = results.getJSONArray(i).getJSONObject(0);
 
                 SalesforceEvent salesforceEvent = parseSalesforceObject(el);
                 Event event = mapFromSalesforceSyncable(salesforceEvent);
                 events.add(event);
-            }
-        }
-
-        return events;
-    }
-
-    private List<SalesforceEvent> mapToSalesforceEvents(JSONArray results) throws JSONException {
-        List<SalesforceEvent> events = new ArrayList<>();
-        if (results != null && results.length() > 0) {
-            JSONArray rows = results.getJSONArray(0);
-            for (int i = 0; i < rows.length(); i++) {
-                JSONObject el = rows.getJSONObject(i);
-
-                SalesforceEvent salesforceEvent = parseSalesforceObject(el);
-                events.add(salesforceEvent);
             }
         }
 

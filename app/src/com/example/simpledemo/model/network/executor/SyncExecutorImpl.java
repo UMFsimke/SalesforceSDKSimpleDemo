@@ -1,6 +1,8 @@
 package com.example.simpledemo.model.network.executor;
 
 
+import android.util.Log;
+
 import com.example.simpledemo.model.repository.Repository;
 import com.example.simpledemo.utils.ListUtils;
 import com.salesforce.androidsdk.accounts.UserAccountManager;
@@ -9,6 +11,7 @@ import com.salesforce.androidsdk.smartsync.app.SmartSyncSDKManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -88,5 +91,16 @@ public class SyncExecutorImpl implements SyncExecutor {
     @Override
     public void performSyncDownOnly() {
         syncSubject.onNext(SYNC_DOWN_ONLY_FLAG);
+    }
+
+    @Override
+    public Observable<Boolean> performFullSyncBlocking() {
+        return Observable.just(true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .skipWhile(syncDownOnly -> !isSyncAllowed())
+                .flatMap(syncDownOnly -> syncDownOnly ? getSyncDownObservable().toObservable() :
+                        getSyncUpObservable().toObservable())
+                .onErrorReturnItem(false);
     }
 }

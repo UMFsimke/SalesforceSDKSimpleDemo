@@ -3,6 +3,7 @@ package com.example.simpledemo.view.editEvent;
 import android.support.v4.util.Pair;
 
 import com.example.simpledemo.MainApplication;
+import com.example.simpledemo.model.network.executor.SyncExecutor;
 import com.example.simpledemo.model.pojo.domain.Event;
 import com.example.simpledemo.model.pojo.domain.User;
 import com.example.simpledemo.model.repository.EventsRepository;
@@ -25,11 +26,13 @@ public class EditEventPresenter implements EditEventContract.Presenter {
     private CompositeDisposable compositeDisposable;
     private Event event;
     private List<User> users;
+    private SyncExecutor syncExecutor;
 
     public EditEventPresenter() {
         compositeDisposable = new CompositeDisposable();
         eventsRepository = MainApplication.getInstance().graph().getEventsRepository();
         userRepository = MainApplication.getInstance().graph().getUserRepository();
+        syncExecutor = MainApplication.getInstance().graph().getSyncExecutor();
     }
 
     @Override
@@ -42,6 +45,7 @@ public class EditEventPresenter implements EditEventContract.Presenter {
         if (eventId != null) {
             Disposable disposable = Observable.combineLatest(eventsRepository.getEvent(eventId),
                     userRepository.getAll(), Pair::new)
+                    .take(1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(eventAndUsers -> {
@@ -111,7 +115,7 @@ public class EditEventPresenter implements EditEventContract.Presenter {
                     if (view == null) { return; }
 
                     if (saved) {
-                        MainApplication.getInstance().graph().getSyncExecutor().performFullSync();
+                        syncExecutor.performFullSync();
                         view.showEventSaved();
                     } else {
                         view.showEventFailedToSave();
@@ -139,7 +143,7 @@ public class EditEventPresenter implements EditEventContract.Presenter {
                     if (view == null) { return; }
 
                     if (deleted) {
-                        MainApplication.getInstance().graph().getSyncExecutor().performFullSync();
+                        syncExecutor.performFullSync();
                         view.showEventDeleted();
                     } else {
                         view.showEventFailedToDelete();

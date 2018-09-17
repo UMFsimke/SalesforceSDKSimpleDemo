@@ -57,9 +57,15 @@ public class EventDetailsFragment extends Fragment implements EventDetailsContra
         eventId = savedInstanceState == null ? getArguments().getString(EXTRA_EVENT_ID) :
                 savedInstanceState.getString(EXTRA_EVENT_ID);
 
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         presenter = MainApplication.getInstance().graph().getEventDetailsPresenter();
         presenter.setView(this);
-        return rootView;
+        presenter.getEvent(eventId);
     }
 
     @Override
@@ -68,11 +74,6 @@ public class EventDetailsFragment extends Fragment implements EventDetailsContra
         outState.putString(EXTRA_EVENT_ID, eventId);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.getEvent(eventId);
-    }
 
     @Override
     public void showEvent(User user, Event event) {
@@ -92,7 +93,6 @@ public class EventDetailsFragment extends Fragment implements EventDetailsContra
             initials.setVisibility(View.GONE);
             profilePhoto.setVisibility(View.VISIBLE);
             new Picasso.Builder(MainApplication.getInstance())
-                    .loggingEnabled(true)
                     .downloader(new OkHttp3Downloader(MainApplication.getInstance().graph().getOkHttpClient()))
                     .build()
                     .load(user.getPhotoUrl())
