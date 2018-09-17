@@ -8,6 +8,7 @@ import com.example.simpledemo.model.pojo.domain.User;
 import com.example.simpledemo.model.repository.EventsRepository;
 import com.example.simpledemo.model.repository.UserRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;

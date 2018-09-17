@@ -1,32 +1,43 @@
 package com.example.simpledemo.view.editEvent;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.R;
 import com.example.simpledemo.model.pojo.domain.Event;
 import com.example.simpledemo.model.pojo.domain.User;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class EditEventFragment extends Fragment implements EditEventContract.View {
+public class EditEventFragment extends Fragment implements EditEventContract.View,
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String EXTRA_EVENT_ID = "EXTRA_EVENT_ID";
+    private static final String FORMAT_PATTERN = "MMM dd, HH:mm";
 
     @BindView(R.id.event_name) protected EditText eventName;
     @BindView(R.id.event_description) protected EditText eventDescription;
@@ -37,6 +48,8 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
 
     private String eventId;
     protected EditEventContract.Presenter presenter;
+    private boolean pickingStartDate;
+    private int selectedYear, selectedMonth, selectedDay;
 
     public static EditEventFragment newInstance(String eventId) {
         EditEventFragment fragment = new EditEventFragment();
@@ -95,7 +108,7 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
         eventName.setText(event != null ? event.getSubject() : null);
         eventDescription.setText(event != null ? event.getDescription() : null);
 
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd, HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT_PATTERN);
         eventStartTime.setText(event != null ? format.format(event.getStartDateTime()) : getString(R.string.set_start_date));
         eventEndTime.setText(event != null ? format.format(event.getEndDateTime()) : getString(R.string.set_end_date));
         eventLocation.setText(event != null ? event.getLocation() : null);
@@ -116,5 +129,73 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
     public void onDestroyView() {
         super.onDestroyView();
         presenter.viewDestroyed();
+    }
+
+    @OnClick(R.id.event_start_time)
+    void onStartTimeClicked() {
+        pickingStartDate = true;
+        showDatePicker(eventStartTime.getText().toString());
+
+    }
+
+    private void showDatePicker(String date) {
+        Date actualDate;
+        if (TextUtils.isEmpty(date)) {
+            actualDate = new Date();
+        } else {
+            SimpleDateFormat format = new SimpleDateFormat(FORMAT_PATTERN);
+            try {
+                actualDate = format.parse(date);
+            } catch (ParseException e) {
+                actualDate = new Date();
+            }
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(actualDate);
+        new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        this.selectedDay = day;
+        this.selectedMonth = month;
+        this.selectedYear = year;
+        showTimePicker();
+    }
+
+    private void showTimePicker() {
+        Calendar calendar = Calendar.getInstance();
+        new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE), false).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selectedYear);
+        calendar.set(Calendar.MONTH, selectedMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT_PATTERN);
+        if (pickingStartDate) {
+            eventStartTime.setText(format.format(calendar.getTime()));
+        } else {
+            eventEndTime.setText(format.format(calendar.getTime()));
+        }
+    }
+
+    @OnClick(R.id.event_end_time)
+    void onEndTimeClicked() {
+        pickingStartDate = false;
+        showDatePicker(eventEndTime.getText().toString());
+    }
+
+    @OnClick(R.id.save)
+    void onSaveClicked() {
+        //presenter.saveEvent();
     }
 }

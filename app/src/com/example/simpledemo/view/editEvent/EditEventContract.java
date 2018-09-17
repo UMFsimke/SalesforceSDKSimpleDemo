@@ -3,6 +3,7 @@ package com.example.simpledemo.view.editEvent;
 import com.example.simpledemo.model.pojo.domain.Event;
 import com.example.simpledemo.model.pojo.domain.User;
 
+import java.util.Date;
 import java.util.List;
 
 public interface EditEventContract {
