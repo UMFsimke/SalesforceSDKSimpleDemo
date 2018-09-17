@@ -8,6 +8,8 @@ import com.salesforce.androidsdk.smartsync.util.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+
 public class SalesforceEvent extends SalesforceSyncable<Event> {
 
     private static final String EVENT_OBJECT_TYPE = "Event";
@@ -35,9 +37,13 @@ public class SalesforceEvent extends SalesforceSyncable<Event> {
             updateField(Constants.ATTRIBUTES, attributes, true);
         }
 
+        rawData.put(LOCALLY_CREATED, isCreated);
+        rawData.put(LOCALLY_DELETED, false);
+        rawData.put(LOCAL, true);
         updateField(FIELD_DESCRIPTION, event.getDescription(), isCreated);
         updateField(FIELD_LOCATION, event.getLocation(), isCreated);
         updateField(FIELD_PRIVATE, event.isPrivateEvent(), isCreated);
+
         updateField(FIELD_START_DATE_TIME, event.getStartDateTime(), isCreated);
         updateField(FIELD_END_DATE_TIME, event.getEndDateTime(), isCreated);
         updateField(FIELD_EVENT_SUBJECT, event.getSubject(), isCreated);

@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.R;
@@ -37,7 +38,7 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String EXTRA_EVENT_ID = "EXTRA_EVENT_ID";
-    private static final String FORMAT_PATTERN = "MMM dd, HH:mm";
+    private static final String FORMAT_PATTERN = "dd MMM yyyy, HH:mm";
 
     @BindView(R.id.event_name) protected EditText eventName;
     @BindView(R.id.event_description) protected EditText eventDescription;
@@ -196,6 +197,60 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
 
     @OnClick(R.id.save)
     void onSaveClicked() {
-        //presenter.saveEvent();
+        String name = eventName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getContext(), "Event name cant be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String location = eventLocation.getText().toString();
+        if (TextUtils.isEmpty(location)) {
+            Toast.makeText(getContext(), "Event location cant be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT_PATTERN);
+        String startAsString = eventStartTime.getText().toString();
+        String endAsString = eventEndTime.getText().toString();
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = format.parse(startAsString);
+            endDate = format.parse(endAsString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (startDate == null || endDate == null) {
+            Toast.makeText(getContext(), "Event start and end cant be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        presenter.saveEvent(name,
+                eventDescription.getText().toString(),
+                eventLocation.getText().toString(),
+                startDate,
+                endDate,
+                eventOrganizer.getSelectedItemPosition());
+    }
+
+    @Override
+    public void showEventSaved() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.event_saved_title)
+                .setMessage(R.string.event_saved_message)
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void showEventFailedToSave() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.error_title)
+                .setMessage(R.string.event_failed_to_save)
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
     }
 }

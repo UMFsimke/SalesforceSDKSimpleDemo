@@ -40,6 +40,9 @@ public class SalesforceUser extends SalesforceSyncable<User> {
             updateField(Constants.ATTRIBUTES, attributes, true);
         }
 
+        rawData.put(LOCALLY_CREATED, isCreated);
+        rawData.put(LOCALLY_DELETED, false);
+        rawData.put(LOCAL, true);
         updateField(FIELD_NAME, user.getName(), isCreated);
         updateField(FIELD_ABOUT_ME, user.getAboutMe(), isCreated);
         updateField(FIELD_ADDRESS, MainApplication.getInstance().graph().getGson()

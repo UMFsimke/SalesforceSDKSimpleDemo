@@ -25,7 +25,7 @@ public class Event extends Syncable<SalesforceEvent> {
         return event;
     }
 
-    private Event() {
+    public Event() {
         super();
     }
 

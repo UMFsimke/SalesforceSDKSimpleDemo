@@ -14,4 +14,7 @@
 	<string name="organizer">Organizer</string>
 	<string name="event_label">Event</string>
 	<string name="save">Save</string>
+	<string name="event_saved_title">Congratulations</string>
+	<string name="event_saved_message">Event saved!</string>
+	<string name="event_failed_to_save">Event could not be saved. Please try again.</string>
 </resources>

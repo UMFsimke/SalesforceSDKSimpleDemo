@@ -11,11 +11,15 @@ public interface EditEventContract {
     interface View {
         void showEvent(Event event, List<User> users);
         void showError(String error);
+        void showEventSaved();
+        void showEventFailedToSave();
     }
 
     interface Presenter {
         void setView(View view);
         void getEvent(String eventId);
         void viewDestroyed();
+        void saveEvent(String name, String description, String location,
+                       Date startDate, Date endDate, int selectedOrganizer);
     }
 }

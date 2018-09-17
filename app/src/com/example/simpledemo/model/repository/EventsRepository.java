@@ -1,5 +1,7 @@
 package com.example.simpledemo.model.repository;
 
+import android.text.TextUtils;
+
 import com.example.simpledemo.model.pojo.domain.Event;
 import com.example.simpledemo.model.pojo.domain.User;
 import com.example.simpledemo.model.pojo.salesforce.SalesforceEvent;
@@ -16,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+
+import static com.example.simpledemo.model.pojo.salesforce.SalesforceSyncable.FIELD_ID;
 
 public class EventsRepository extends BaseSyncableRepository<Event> {
 
@@ -94,6 +99,21 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
         return events;
     }
 
+    private List<SalesforceEvent> mapToSalesforceEvents(JSONArray results) throws JSONException {
+        List<SalesforceEvent> events = new ArrayList<>();
+        if (results != null && results.length() > 0) {
+            JSONArray rows = results.getJSONArray(0);
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject el = rows.getJSONObject(i);
+
+                SalesforceEvent salesforceEvent = parseSalesforceObject(el);
+                events.add(salesforceEvent);
+            }
+        }
+
+        return events;
+    }
+
     public Observable<Event> getEvent(String eventId) {
         return dataChanged
                 .map(dataUpdated -> String.format(QUERY_GET_EVENT_WITH_ID, eventId))
@@ -102,5 +122,38 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
                 .map(query -> smartStore.query(query, 0))
                 .map(this::mapToEvents)
                 .map(events -> events.get(0));
+    }
+
+    public Single<Boolean> saveEvent(Event event) {
+        return Single.just(TextUtils.isEmpty(event.getId()))
+                .flatMap(shouldCreate -> {
+                    SalesforceEvent salesforceEvent = new SalesforceEvent(new JSONObject());
+                    salesforceEvent.updateFrom(event);
+                    if (shouldCreate) {
+                        return Single.just(salesforceEvent);
+                    }
+
+                    return getSalesforceEvent(event.getId())
+                            .take(1)
+                            .doOnNext(sEvent -> sEvent.updateFrom(event))
+                            .singleOrError();
+                })
+                .doOnSuccess(salesforceEvent -> {
+                    if (TextUtils.isEmpty(event.getId())) {
+                        smartStore.create(SOUP_NAME, salesforceEvent.getRawData());
+                    } else {
+                        smartStore.upsert(SOUP_NAME, salesforceEvent.getRawData());
+                    }
+                })
+                .map(salesforceEvent -> true)
+                .onErrorReturnItem(false);
+    }
+
+    public Observable<SalesforceEvent> getSalesforceEvent(String eventId) {
+        return dataChanged
+                .map(dataChanged -> smartStore.retrieve(SOUP_NAME,
+                            smartStore.lookupSoupEntryId(SOUP_NAME,
+                                    FIELD_ID, eventId)).getJSONObject(0))
+                .map(this::parseSalesforceObject);
     }
 }

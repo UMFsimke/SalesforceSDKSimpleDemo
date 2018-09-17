@@ -85,4 +85,44 @@ public class EditEventPresenter implements EditEventContract.Presenter {
         view = null;
         compositeDisposable.dispose();
     }
+
+    @Override
+    public void saveEvent(String name, String description,
+                          String location, Date startDate, Date endDate,
+                          int selectedOrganizer) {
+        if (event == null) {
+            event = new Event();
+        }
+
+        event.setAllDay(false);
+        event.setSubject(name);
+        event.setDescription(description);
+        event.setLocation(location);
+        event.setStartDateTime(startDate);
+        event.setEndDateTime(endDate);
+        event.setPrivateEvent(false);
+
+        User organizer = users.get(selectedOrganizer);
+        event.setCreatedBy(organizer);
+        Disposable disposable = eventsRepository.saveEvent(event)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(saved -> {
+                    if (view == null) { return; }
+
+                    if (saved) {
+                        MainApplication.getInstance().graph().getSyncExecutor().performFullSync();
+                        view.showEventSaved();
+                    } else {
+                        view.showEventFailedToSave();
+                    }
+                }, error -> {
+                    if (view == null) {
+                        return;
+                    }
+
+                    view.showError(error.getLocalizedMessage());
+                });
+        compositeDisposable.add(disposable);
+    }
 }
