@@ -5,7 +5,24 @@
 	<string name="app_package">com.example.simpledemo</string>
     <string name="welcome">Welcome %s</string>
 	<string name="logout_button">Logout</string>
-	<string name="fetch_contacts_button">Fetch Contacts</string>
-	<string name="fetch_accounts_button">Fetch Accounts</string>
-	<string name="clear_button">Clear</string>
+	<string name="error_title">Error</string>
+	<string name="ok">OK</string>
+	<string name="start_date">Start Date</string>
+	<string name="set_start_date">Set Start Date</string>
+	<string name="end_date">End Date</string>
+	<string name="set_end_date">Set End Date</string>
+	<string name="organizer">Organizer</string>
+	<string name="event_label">Event</string>
+	<string name="save">Save</string>
+	<string name="delete">Delete</string>
+	<string name="delete_event">Remove Event?</string>
+	<string name="delete_event_are_you_sure">You are about to delete an event. Are you sure?</string>
+	<string name="btn_continue">Continue</string>
+	<string name="cancel">Cancel</string>
+	<string name="event_saved_title">Congratulations</string>
+	<string name="event_saved_message">Event saved!</string>
+	<string name="event_failed_to_save">Event could not be saved. Please try again.</string>
+	<string name="event_deleted_title">Deleted</string>
+	<string name="event_deleted_message">Event deleted!</string>
+	<string name="event_failed_to_delete">Event could not be deleted. Please try again.</string>
 </resources>

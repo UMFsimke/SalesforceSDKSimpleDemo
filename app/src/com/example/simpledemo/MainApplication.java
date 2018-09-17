@@ -27,35 +27,45 @@
 package com.example.simpledemo;
 
 import android.app.Application;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 
+import com.example.simpledemo.model.di.Graph;
+import com.example.simpledemo.syncs.SyncService;
+import com.example.simpledemo.view.MainActivity;
 import com.salesforce.androidsdk.analytics.security.Encryptor;
 import com.salesforce.androidsdk.app.SalesforceSDKManager.KeyInterface;
+import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.smartsync.app.SmartSyncSDKManager;
+import com.salesforce.androidsdk.ui.LoginActivity;
 
 /**
  * Application class for our application.
  */
 public class MainApplication extends Application {
 
+	private Graph graph;
+	private static MainApplication instance;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SmartSyncSDKManager.initNative(getApplicationContext(), new NativeKeyImpl(), MainActivity.class);
+		instance = this;
+		SmartSyncSDKManager.initNative(getApplicationContext(), new NativeKeyImpl(), MainActivity.class, LoginActivity.class);
+	}
 
-        /*
-         * Uncomment the following line to enable IDP login flow. This will allow the user to
-         * either authenticate using the current app or use a designated IDP app for login.
-         * Replace 'idpAppURIScheme' with the URI scheme of the IDP app meant to be used.
-         */
-		// SmartSyncSDKManager.getInstance().setIDPAppURIScheme(idpAppURIScheme);
+	public static MainApplication getInstance() {
+		return instance;
+	}
 
-		/*
-		 * Un-comment the line below to enable push notifications in this app.
-		 * Replace 'pnInterface' with your implementation of 'PushNotificationInterface'.
-		 * Add your Google package ID in 'bootonfig.xml', as the value
-		 * for the key 'androidPushNotificationClientId'.
-		 */
-		// SmartSyncSDKManager.getInstance().setPushNotificationReceiver(pnInterface);
+	public Graph graph() {
+		return graph;
+	}
+
+	public void initGraph(RestClient restClient) {
+		graph = Graph.Initializer.init(instance, restClient);
 	}
 }
 

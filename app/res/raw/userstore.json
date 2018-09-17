@@ -1,0 +1,31 @@
+{
+  "soups": [
+    {
+      "soupName": "users",
+      "indexes": [
+        { "path": "Id", "type": "string"},
+        { "path": "Name", "type": "string"},
+        { "path": "Phone", "type": "string"},
+        { "path": "Username", "type": "string"},
+        { "path": "__local__", "type": "string"},
+        { "path": "__locally_created__", "type": "string"},
+        { "path": "__locally_updated__", "type": "string"},
+        { "path": "__locally_deleted__", "type": "string"},
+        { "path": "__sync_id__", "type": "integer"}
+      ]
+    },
+    {
+      "soupName": "events",
+      "indexes": [
+        { "path": "Id", "type": "string"},
+        { "path": "CreatedById", "type": "string"},
+        { "path": "StartDateTime", "type": "string"},
+        { "path": "__local__", "type": "string"},
+        { "path": "__locally_created__", "type": "string"},
+        { "path": "__locally_updated__", "type": "string"},
+        { "path": "__locally_deleted__", "type": "string"},
+        { "path": "__sync_id__", "type": "integer"}
+      ]
+    }
+  ]
+}
