@@ -100,7 +100,6 @@ public abstract class BaseSyncableRepository<T extends Syncable> implements Repo
                     if (SyncState.Status.DONE.equals(syncResult.getStatus())) {
                         downstream.onSuccess(true);
                         dataChanged.onNext(true);
-                        Log.e("Data", getSoupName());
                     } else if (SyncState.Status.FAILED.equals(syncResult.getStatus())) {
                         downstream.onSuccess(false);
                     }

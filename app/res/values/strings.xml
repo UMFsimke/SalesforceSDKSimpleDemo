@@ -14,7 +14,15 @@
 	<string name="organizer">Organizer</string>
 	<string name="event_label">Event</string>
 	<string name="save">Save</string>
+	<string name="delete">Delete</string>
+	<string name="delete_event">Remove Event?</string>
+	<string name="delete_event_are_you_sure">You are about to delete an event. Are you sure?</string>
+	<string name="btn_continue">Continue</string>
+	<string name="cancel">Cancel</string>
 	<string name="event_saved_title">Congratulations</string>
 	<string name="event_saved_message">Event saved!</string>
 	<string name="event_failed_to_save">Event could not be saved. Please try again.</string>
+	<string name="event_deleted_title">Deleted</string>
+	<string name="event_deleted_message">Event deleted!</string>
+	<string name="event_failed_to_delete">Event could not be deleted. Please try again.</string>
 </resources>

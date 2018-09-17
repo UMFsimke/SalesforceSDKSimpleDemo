@@ -13,12 +13,15 @@ public interface EditEventContract {
         void showError(String error);
         void showEventSaved();
         void showEventFailedToSave();
+        void showEventDeleted();
+        void showEventFailedToDelete();
     }
 
     interface Presenter {
         void setView(View view);
         void getEvent(String eventId);
         void viewDestroyed();
+        void deleteEvent();
         void saveEvent(String name, String description, String location,
                        Date startDate, Date endDate, int selectedOrganizer);
     }

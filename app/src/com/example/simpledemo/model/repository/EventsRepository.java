@@ -121,6 +121,7 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
                         Integer.MAX_VALUE)))
                 .map(query -> smartStore.query(query, 0))
                 .map(this::mapToEvents)
+                .filter(events -> events.size() > 0)
                 .map(events -> events.get(0));
     }
 
@@ -155,5 +156,23 @@ public class EventsRepository extends BaseSyncableRepository<Event> {
                             smartStore.lookupSoupEntryId(SOUP_NAME,
                                     FIELD_ID, eventId)).getJSONObject(0))
                 .map(this::parseSalesforceObject);
+    }
+
+    public Single<Boolean> deleteEvent(Event event) {
+        return getSalesforceEvent(event.getId())
+                .take(1)
+                .doOnNext(sEvent -> sEvent.updateFrom(event))
+                .singleOrError()
+                .doOnSuccess(salesforceEvent -> {
+                    if (salesforceEvent.isLocallyCreated()) {
+                        smartStore.delete(SOUP_NAME,
+                                salesforceEvent.getRawData().getLong(SmartStore.SOUP_ENTRY_ID));
+                    } else {
+                        salesforceEvent.delete();
+                        smartStore.upsert(SOUP_NAME, salesforceEvent.getRawData());
+                    }
+                })
+                .map(salesforceEvent -> true)
+                .onErrorReturnItem(false);
     }
 }

@@ -125,4 +125,32 @@ public class EditEventPresenter implements EditEventContract.Presenter {
                 });
         compositeDisposable.add(disposable);
     }
+
+    @Override
+    public void deleteEvent() {
+        if (event == null) {
+            return;
+        }
+
+        Disposable disposable = eventsRepository.deleteEvent(event)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(deleted -> {
+                    if (view == null) { return; }
+
+                    if (deleted) {
+                        MainApplication.getInstance().graph().getSyncExecutor().performFullSync();
+                        view.showEventDeleted();
+                    } else {
+                        view.showEventFailedToDelete();
+                    }
+                }, error -> {
+                    if (view == null) {
+                        return;
+                    }
+
+                    view.showError(error.getLocalizedMessage());
+                });
+        compositeDisposable.add(disposable);
+    }
 }

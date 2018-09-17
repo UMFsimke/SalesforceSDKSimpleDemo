@@ -20,6 +20,9 @@ import butterknife.ButterKnife;
 public class EventDetailsActivity extends SalesforceActivity {
 
     public static final String EXTRA_EVENT_ID = "EXTRA_EVENT_ID";
+    public static final int EVENT_DETAILS_REQUEST_CODE = 1231;
+    public static final int EVENT_DELETED = 121;
+    public static final int EVENT_CHANGED = 123;
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     private String eventId;
@@ -60,7 +63,7 @@ public class EventDetailsActivity extends SalesforceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.edit) {
             Intent intent = EditEventActivity.newInstance(this, eventId);
-            startActivity(intent);
+            startActivityForResult(intent, EVENT_DETAILS_REQUEST_CODE);
             return true;
         }
 
@@ -70,5 +73,19 @@ public class EventDetailsActivity extends SalesforceActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EVENT_DETAILS_REQUEST_CODE && resultCode == EVENT_DELETED) {
+            finish();
+            return;
+        }
+
+        if (requestCode == EVENT_DETAILS_REQUEST_CODE && resultCode == EVENT_CHANGED) {
+            initDetailsFragment(eventId);
+            return;
+        }
     }
 }

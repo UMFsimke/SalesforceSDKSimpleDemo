@@ -23,6 +23,7 @@ import com.example.simpledemo.MainApplication;
 import com.example.simpledemo.R;
 import com.example.simpledemo.model.pojo.domain.Event;
 import com.example.simpledemo.model.pojo.domain.User;
+import com.example.simpledemo.view.eventDetails.EventDetailsActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -239,7 +240,10 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.event_saved_title)
                 .setMessage(R.string.event_saved_message)
-                .setPositiveButton(R.string.ok, null)
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    getActivity().setResult(EventDetailsActivity.EVENT_CHANGED);
+                    getActivity().finish();
+                })
                 .create()
                 .show();
     }
@@ -249,6 +253,40 @@ public class EditEventFragment extends Fragment implements EditEventContract.Vie
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.error_title)
                 .setMessage(R.string.event_failed_to_save)
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
+    }
+
+    @OnClick(R.id.delete)
+    void onDeleteClicked() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_event)
+                .setMessage(R.string.delete_event_are_you_sure)
+                .setPositiveButton(R.string.btn_continue, (dialog, i) -> presenter.deleteEvent())
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void showEventDeleted() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.event_deleted_title)
+                .setMessage(R.string.event_deleted_message)
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    getActivity().setResult(EventDetailsActivity.EVENT_DELETED);
+                    getActivity().finish();
+                })
+                .create()
+                .show();
+    }
+
+    @Override
+    public void showEventFailedToDelete() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.error_title)
+                .setMessage(R.string.event_failed_to_delete)
                 .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();

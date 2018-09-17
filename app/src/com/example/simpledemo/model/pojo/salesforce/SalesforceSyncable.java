@@ -48,12 +48,12 @@ public abstract class SalesforceSyncable<T extends Syncable> extends SalesforceO
     }
 
     protected void updateField(String key, Date newValue, boolean newlyCreated) throws JSONException {
-        /*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String newValue = format.format(newValue);*/
-        long oldValue = rawData.optLong(key);
-        long newValueMillis = newValue != null ? newValue.getTime() : 0L;
-        if ((newValueMillis) != oldValue || !rawData.has(key)) {
-            update(key, (newValueMillis), newlyCreated);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        String newDate = format.format(newValue);
+
+        String oldValue = rawData.optString(key);
+        if (!newDate.equals(oldValue) || !rawData.has(key)) {
+            update(key, newDate, newlyCreated);
         }
     }
 

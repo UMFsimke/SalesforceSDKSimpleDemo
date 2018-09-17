@@ -82,4 +82,14 @@
         android:text="@string/save"
         android:background="@color/colorPrimary"/>
 
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        android:textColor="@android:color/white"
+        android:text="@string/delete"
+        android:background="@color/colorAccent"/>
+
 </LinearLayout>

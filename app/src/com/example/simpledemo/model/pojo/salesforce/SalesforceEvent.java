@@ -53,4 +53,14 @@ public class SalesforceEvent extends SalesforceSyncable<Event> {
     public String getCreatedById() {
         return rawData.optString(FIELD_CREATED_BY_ID);
     }
+
+    public boolean isLocallyCreated() {
+        return rawData.optBoolean(LOCALLY_CREATED);
+    }
+
+    public void delete() throws JSONException {
+        rawData.put(LOCALLY_DELETED, true);
+        rawData.put(LOCAL, true);
+
+    }
 }
