@@ -27,8 +27,13 @@
 package com.example.simpledemo;
 
 import android.app.Application;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 
 import com.example.simpledemo.model.di.Graph;
+import com.example.simpledemo.syncs.SyncService;
 import com.example.simpledemo.view.MainActivity;
 import com.salesforce.androidsdk.analytics.security.Encryptor;
 import com.salesforce.androidsdk.app.SalesforceSDKManager.KeyInterface;
